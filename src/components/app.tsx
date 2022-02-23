@@ -6,10 +6,10 @@ import Hero from './hero';
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-const App = () => (
+const App: React.FC = () => (
   <div className="container">
     <Header />
-    <Hero />
+    <Hero altText='Giant Panda 🐼' />
     <Content />
   </div>
 );

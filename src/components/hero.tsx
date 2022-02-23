@@ -6,9 +6,13 @@ const Image = styled.img`
   width: 100%;
 `;
 
-const Hero = () => (
+type Props = {
+  altText: string,
+}
+
+const Hero: React.FC<Props> = ({ altText }) => (
   <div>
-    <Image src={heroImage}  alt="Giant Panda 🐼" />
+    <Image src={heroImage} alt={altText} />
   </div>
 );
 

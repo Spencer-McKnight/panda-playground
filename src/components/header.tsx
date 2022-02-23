@@ -1,7 +1,5 @@
-import classNames from 'classnames';
 import React from 'react';
 import styled from 'styled-components';
-
 import DonateButton from './donate-button';
 import Logo from './logo';
 
@@ -25,11 +23,11 @@ const NavBar = styled.nav`
 
 
 const Header = () => (
-  <NavBar className={classNames('navbar navbar-dark bg-dark')}>
+  <NavBar className='navbar navbar-dark bg-dark'>
     <LogoContainer>
-      <Logo />
+      <Logo text={"Panda Rescue ™"} />
     </LogoContainer>
-    <DonateButton />
+    <DonateButton button={{ link: "https://www.givenow.com.au/", class: "btn btn-info", rel: "noopener noreferrer", target: "_blank" }} text="Donate Now!" />
   </NavBar>
 );
 

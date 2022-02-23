@@ -11,13 +11,13 @@ const Wrapper = styled.div`
   padding: '50px';
 `;
 
-const Content = () => (
+const Content: React.FC = () => (
   <Wrapper>
     <h1>There are only 1,800 Giant Pandas remaining in the wild</h1>
     <p className="lead">
       Help us to save this beautiful animal by donating now.
     </p>
-    <Divider  />
+    <Divider />
     <p>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent a nibh
       ac eros ultricies volutpat feugiat quis quam. In hac habitasse platea
