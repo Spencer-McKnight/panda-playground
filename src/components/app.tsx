@@ -47,7 +47,12 @@ const App: React.FC = () => {
 
   if (!state.loaded) {
     return (
-      <h1>Loading...</h1>
+      <div className="container">
+        <Header />
+        <Hero altText='Giant Panda 🐼' />
+        <h1>Loading...</h1>
+      </div>
+
     )
   } else {
     return (

@@ -4,24 +4,25 @@ import { DonationEntry } from '../types/global.d'
 
 interface Props {
     dataset: DonationEntry[],
-    min: number,
-    max: number,
 }
 
 
-const isDisplayed = (value: DonationEntry) => {
+const isDisplayed: (arg0: DonationEntry) => boolean = (value: DonationEntry) => {
     return value.isPublic === true;
 }
 
-const Table: React.FC<Props> = ({ dataset, min, max }) => {
-    let displayData: DonationEntry[];
+const getTableHTML: (arg0: DonationEntry[]) => JSX.Element = (dataset: DonationEntry[]) => {
+    let displayData: DonationEntry[] = dataset.filter(isDisplayed);
 
-    displayData = dataset.filter(isDisplayed);
-
-    let tableHTML = dataset.map(function (item, i) {
-        console.log(item)
+    let HTML = displayData.map(function (item, i) {
         return <li key={i}>{item.amount}</li>
     })
+
+    return <ul> + {HTML} + </ul>;
+}
+
+const Table: React.FC<Props> = ({ dataset }) => {
+    let tableHTML = getTableHTML(dataset);
 
     return (
         <ul>
