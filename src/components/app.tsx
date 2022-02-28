@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useReducer, useEffect } from 'react';
 
 import Content from './content';
 import Header from './header';
@@ -8,36 +8,44 @@ import { DonationEntry } from '../types/global.d'
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-let updErrorData: React.Dispatch<React.SetStateAction<string | null>>;
-let updIsLoaded: React.Dispatch<React.SetStateAction<boolean>>;
-let updData: React.Dispatch<React.SetStateAction<DonationEntry[]>>;
+interface TableState {
+  loaded: boolean,
+  error: string | null,
+  data: DonationEntry[],
+}
 
-const fetchData: Function = () => {
-  fetch("https://inlight-panda-rescue-api.herokuapp.com/donations?apiKey=cr2eJJDmDK94NgbaPL8Z")
+const fetchData: () => Promise<TableState> = () => {
+  return fetch("https://inlight-panda-rescue-api.herokuapp.com/donations?apiKey=cr2eJJDmDK94NgbaPL8Z")
     .then(res => res.json())
     .then((result) => {
-      updIsLoaded(true);
-      updData(result);
+      let obj: TableState = { loaded: true, data: result, error: null }
+      return obj
     }, (error) => {
-      updIsLoaded(true);
-      updErrorData(error);
+      let obj: TableState = { loaded: true, data: [], error: error }
+      return obj
     })
 }
 
 const App: React.FC = () => {
-  const [errorData, setErrorData] = useState<string | null>(null);
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-  const [data, setData] = useState<DonationEntry[]>([]);
-
-  updErrorData = setErrorData;
-  updIsLoaded = setIsLoaded;
-  updData = setData;
+  const [state, setState] = useReducer(
+    (state: TableState, newState: Partial<TableState>) => ({
+      ...state,
+      ...newState,
+    }),
+    {
+      loaded: false,
+      error: null,
+      data: []
+    }
+  )
 
   useEffect(() => {
-    fetchData();
+    fetchData().then((e: any) => {
+      setState(e);
+    });
   }, [])
 
-  if (!isLoaded) {
+  if (!state.loaded) {
     return (
       <h1>Loading...</h1>
     )
@@ -46,7 +54,7 @@ const App: React.FC = () => {
       <div className="container">
         <Header />
         <Hero altText='Giant Panda 🐼' />
-        <Content dataset={data} errorMsg={errorData} />
+        <Content dataset={state.data} errorMsg={state.error} />
       </div>
     )
   }
