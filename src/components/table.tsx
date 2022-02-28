@@ -18,7 +18,7 @@ const Table: React.FC<Props> = ({ dataset, min, max }) => {
 
     displayData = dataset.filter(isDisplayed);
 
-    let tableHTML = displayData.map(function (item, i) {
+    let tableHTML = dataset.map(function (item, i) {
         console.log(item)
         return <li key={i}>{item.amount}</li>
     })
