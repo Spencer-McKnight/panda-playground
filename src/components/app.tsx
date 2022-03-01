@@ -18,11 +18,11 @@ const fetchData: () => Promise<TableState> = () => {
   return fetch("https://inlight-panda-rescue-api.herokuapp.com/donations?apiKey=cr2eJJDmDK94NgbaPL8Z")
     .then(res => res.json())
     .then((result) => {
-      let obj: TableState = { loaded: true, data: result, error: null }
-      return obj
+      const stateObj: TableState = { loaded: true, data: result, error: null }
+      return stateObj
     }, (error) => {
-      let obj: TableState = { loaded: true, data: [], error: error }
-      return obj
+      const stateObj: TableState = { loaded: true, data: [], error: error }
+      return stateObj
     })
 }
 
