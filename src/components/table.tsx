@@ -18,16 +18,14 @@ const getTableHTML: (arg0: DonationEntry[]) => JSX.Element = (dataset: DonationE
         return <li key={i}>{item.amount}</li>
     })
 
-    return <ul> + {HTML} + </ul>;
+    return <ul>{HTML}</ul>;
 }
 
 const Table: React.FC<Props> = ({ dataset }) => {
     let tableHTML = getTableHTML(dataset);
 
     return (
-        <ul>
-            {tableHTML}
-        </ul>
+        tableHTML
     )
 }
 
