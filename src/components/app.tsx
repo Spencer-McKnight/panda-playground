@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Content from './content';
 import Header from './header';
@@ -27,17 +27,7 @@ const fetchData: () => Promise<TableState> = () => {
 }
 
 const App: React.FC = () => {
-  const [state, setState] = useReducer(
-    (state: TableState, newState: Partial<TableState>) => ({
-      ...state,
-      ...newState,
-    }),
-    {
-      loaded: false,
-      error: null,
-      data: []
-    }
-  )
+  const [state, setState] = useState<TableState>({ loaded: false, error: null, data: [] });
 
   useEffect(() => {
     fetchData().then((e: any) => {
