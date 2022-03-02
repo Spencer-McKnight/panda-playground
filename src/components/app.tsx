@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useReducer, useEffect } from 'react';
 
 import Content from './content';
 import Header from './header';
@@ -8,30 +8,45 @@ import { DonationEntry } from '../types/global.d'
 
 import 'bootstrap/dist/css/bootstrap.css';
 
-interface TableState {
+type TableState = {
   loaded: boolean,
   error: string | null,
   data: DonationEntry[],
 }
 
-const fetchData: () => Promise<TableState> = () => {
+type Action =
+  | { type: 'success', dataset: DonationEntry[] }
+  | { type: 'failure', errorMsg: string }
+
+const reducer = (state: TableState, action: Action) => {
+  switch (action.type) {
+    case action.type = "success":
+      return { loaded: true, data: action.dataset, error: null }
+    case action.type = "failure":
+      return { loaded: true, data: [], error: action.errorMsg }
+    default:
+      return state;
+  }
+}
+
+const fetchData: () => Promise<Action> = () => {
   return fetch("https://inlight-panda-rescue-api.herokuapp.com/donations?apiKey=cr2eJJDmDK94NgbaPL8Z")
     .then(res => res.json())
     .then((result) => {
-      const stateObj: TableState = { loaded: true, data: result, error: null }
-      return stateObj
+      const doneObj: Action = { type: "success", dataset: result };
+      return doneObj
     }, (error) => {
-      const stateObj: TableState = { loaded: true, data: [], error: error }
-      return stateObj
+      const failObj: Action = { type: "failure", errorMsg: error.value };
+      return failObj
     })
 }
 
 const App: React.FC = () => {
-  const [state, setState] = useState<TableState>({ loaded: false, error: null, data: [] });
+  const [state, dispatch] = useReducer(reducer, { loaded: false, error: null, data: [] })
 
   useEffect(() => {
     fetchData().then((e: any) => {
-      setState(e);
+      dispatch(e);
     });
   }, [])
 
@@ -42,7 +57,6 @@ const App: React.FC = () => {
         <Hero altText='Giant Panda 🐼' />
         <h1>Loading...</h1>
       </div>
-
     )
   } else {
     return (
