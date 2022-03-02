@@ -23,6 +23,7 @@ const reducer = (state: TableState, action: Action) => {
     case action.type = "success":
       return { loaded: true, data: action.dataset, error: null }
     case action.type = "failure":
+      console.log(action.errorMsg);
       return { loaded: true, data: [], error: action.errorMsg }
     default:
       return state;
@@ -30,14 +31,16 @@ const reducer = (state: TableState, action: Action) => {
 }
 
 const fetchData: () => Promise<Action> = () => {
-  return fetch("https://inlight-panda-rescue-api.herokuapp.com/donations?apiKey=cr2eJJDmDK94NgbaPL8Z")
+  return fetch("https://inlight-panda-rescue-api.herokuapp.com/donations?apiKey=cr2eJJDmDK94NgbaPL8")
     .then(res => res.json())
     .then((result) => {
-      const doneObj: Action = { type: "success", dataset: result };
-      return doneObj
-    }, (error) => {
-      const failObj: Action = { type: "failure", errorMsg: error.value };
-      return failObj
+      if (result.hasOwnProperty("error")) {
+        const failObj: Action = { type: "failure", errorMsg: result.error };
+        return failObj
+      } else {
+        const doneObj: Action = { type: "success", dataset: result };
+        return doneObj;
+      }
     })
 }
 

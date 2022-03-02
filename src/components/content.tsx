@@ -20,7 +20,7 @@ interface Props {
   errorMsg: string | null;
 }
 
-const Content: React.FC<Props> = ({ dataset }) => {
+const Content: React.FC<Props> = ({ dataset, errorMsg }) => {
   return (
     <>
       <Wrapper>
@@ -28,7 +28,7 @@ const Content: React.FC<Props> = ({ dataset }) => {
         <p className="lead">
           Help us to save this beautiful animal by donating now.
         </p>
-        <Table dataset={dataset} />
+        <Table dataset={dataset} error={errorMsg} />
         <Divider />
       </Wrapper>
     </>
