@@ -1,6 +1,6 @@
 declare interface DonationEntry {
     amount: string,
-    date: Date,
+    date: string,
     donor: number,
     isPublic: boolean,
 }
