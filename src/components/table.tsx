@@ -19,9 +19,23 @@ const StyledTable = styled.table`
         border: 1px solid #ddd;
     }   
 `;
-interface Props {
-    dataset: DonationEntry[],
-    error: string | null,
+
+type Props = {
+    loading: false,
+    data: DonationEntry[]
+} | {
+    loading: false,
+    error: string
+}
+
+interface DataProp {
+    loading: false,
+    data: DonationEntry[]
+}
+
+interface ErrProp {
+    loading: false,
+    error: string
 }
 
 const isoToDMY: (isoDate: string) => string = (isoDate: string) => {
@@ -37,12 +51,13 @@ const getTableHTML: (arg0: DonationEntry[]) => JSX.Element = (dataset: DonationE
     return <StyledTable><tbody><tr><th>Date</th><th>Donor ID</th><th>Amount</th></tr>{listNodes}</tbody></StyledTable>;
 }
 
-const Table: React.FC<Props> = ({ dataset, error }) => {
-    if (error === null) {
-        const tableHTML = getTableHTML(dataset);
-        return (tableHTML)
+const Table: React.FC<Props> = (props) => {
+    //unsure about implementation of props as x to avoid type error
+    if (props.hasOwnProperty('error')) {
+        return (<h2>The following error has occurred: {(props as ErrProp).error}</h2>)
     } else {
-        return (<h2>The following error has occurred: {error}</h2>)
+        const tableHTML = getTableHTML((props as DataProp).data);
+        return (tableHTML)
     }
 }
 

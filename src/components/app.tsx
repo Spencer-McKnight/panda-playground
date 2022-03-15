@@ -9,29 +9,33 @@ import { DonationEntry } from '../types/global.d'
 import 'bootstrap/dist/css/bootstrap.css';
 
 type TableState = {
-  loaded: boolean,
-  error: string | null,
-  data: DonationEntry[],
+  loading: true,
+} | {
+  loading: false,
+  data: DonationEntry[]
+} | {
+  loading: false,
+  error: string
 }
 
 type Action =
   | { type: 'success', dataset: DonationEntry[] }
   | { type: 'failure', errorMsg: string }
 
-const reducer = (state: TableState, action: Action) => {
+const reducer: (arg0: TableState, arg1: Action) => TableState = (state: TableState, action: Action) => {
   switch (action.type) {
     case action.type = "success":
-      return { loaded: true, data: action.dataset, error: null }
+      return { loading: false, data: action.dataset }
     case action.type = "failure":
       console.log(action.errorMsg);
-      return { loaded: true, data: [], error: action.errorMsg }
+      return { loading: false, error: action.errorMsg }
     default:
       return state;
   }
 }
 
 const fetchData: () => Promise<Action> = () => {
-  return fetch("https://inlight-panda-rescue-api.herokuapp.com/donations?apiKey=cr2eJJDmDK94NgbaPL8")
+  return fetch("https://inlight-panda-rescue-api.herokuapp.com/donations?apiKey=cr2eJJDmDK94NgbaPL8Z")
     .then(res => res.json())
     .then((result) => {
       if (result.hasOwnProperty("error")) {
@@ -45,7 +49,7 @@ const fetchData: () => Promise<Action> = () => {
 }
 
 const App: React.FC = () => {
-  const [state, dispatch] = useReducer(reducer, { loaded: false, error: null, data: [] })
+  const [state, dispatch] = useReducer(reducer, { loading: true })
 
   useEffect(() => {
     fetchData().then((e: any) => {
@@ -53,7 +57,7 @@ const App: React.FC = () => {
     });
   }, [])
 
-  if (!state.loaded) {
+  if (state.loading) {
     return (
       <div className="container">
         <Header />
@@ -66,7 +70,7 @@ const App: React.FC = () => {
       <div className="container">
         <Header />
         <Hero altText='Giant Panda 🐼' />
-        <Content dataset={state.data} errorMsg={state.error} />
+        <Content {...state} />
       </div>
     )
   }
