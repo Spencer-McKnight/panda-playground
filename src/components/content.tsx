@@ -15,12 +15,15 @@ const Wrapper = styled.div`
   padding: '50px';
 `;
 
-interface Props {
-  dataset: DonationEntry[],
-  errorMsg: string | null;
+type Props = {
+  loading: false,
+  data: DonationEntry[]
+} | {
+  loading: false,
+  error: string
 }
 
-const Content: React.FC<Props> = ({ dataset, errorMsg }) => {
+const Content: React.FC<Props> = (props) => {
   return (
     <>
       <Wrapper>
@@ -28,7 +31,7 @@ const Content: React.FC<Props> = ({ dataset, errorMsg }) => {
         <p className="lead">
           Help us to save this beautiful animal by donating now.
         </p>
-        <Table dataset={dataset} error={errorMsg} />
+        <Table {...props} />
         <Divider />
       </Wrapper>
     </>
