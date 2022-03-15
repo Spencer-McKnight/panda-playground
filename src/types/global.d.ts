@@ -4,5 +4,3 @@ declare interface DonationEntry {
     donor: number,
     isPublic: boolean,
 }
-
-export type { DonationEntry }

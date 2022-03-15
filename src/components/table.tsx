@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DonationEntry } from '../types/global.d'
+import { TableProps } from 'types/types';
 
 const StyledTable = styled.table`
     border: 1px solid #ddd;
@@ -19,14 +19,6 @@ const StyledTable = styled.table`
         border: 1px solid #ddd;
     }   
 `;
-
-type Props = {
-    loading: false,
-    data: DonationEntry[]
-} | {
-    loading: false,
-    error: string
-}
 
 interface DataProp {
     loading: false,

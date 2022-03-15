@@ -4,8 +4,6 @@ import Content from './content';
 import Header from './header';
 import Hero from './hero';
 
-import { DonationEntry } from '../types/global.d'
-
 import 'bootstrap/dist/css/bootstrap.css';
 
 type TableState = {
@@ -22,12 +20,16 @@ type Action =
   | { type: 'success', dataset: DonationEntry[] }
   | { type: 'failure', errorMsg: string }
 
+const isDisplayed: (arg0: DonationEntry) => boolean = (value: DonationEntry) => {
+  return value.isPublic === true;
+}
+
 const reducer: (arg0: TableState, arg1: Action) => TableState = (state: TableState, action: Action) => {
   switch (action.type) {
     case action.type = "success":
-      return { loading: false, data: action.dataset }
+      const filterData: DonationEntry[] = action.dataset.filter(isDisplayed)
+      return { loading: false, data: filterData }
     case action.type = "failure":
-      console.log(action.errorMsg);
       return { loading: false, error: action.errorMsg }
     default:
       return state;

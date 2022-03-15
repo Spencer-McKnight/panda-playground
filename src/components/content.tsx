@@ -1,8 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { DonationEntry } from '../types/global.d'
-
 import Table from './table'
 
 const Divider = styled.hr`
